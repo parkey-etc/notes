@@ -1,8 +1,7 @@
 <?php
 try {
-  // Формируем путь к базе данных
   $dns = 'sqlite:' . __DIR__ . '/notes.db';
-  $username = null;  // Для SQLite не нужно указывать имя пользователя
+  $username = null; // Для SQLite не нужно указывать имя пользователя
   $password = null;  // Для SQLite не нужно указывать пароль
 
   // Создаем объект PDO

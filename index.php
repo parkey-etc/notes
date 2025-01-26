@@ -1,18 +1,14 @@
 <?php
 date_default_timezone_set('Europe/Kiev');
 
-$nonce = bin2hex(random_bytes(16));  
-
 $file = 'VERSION';
 $version = file_exists($file), file_get_contents($file) : 'Не определено.';
-
-header("Content-Security-Policy: script-src 'self' 'nonce-$nonce'; style-src 'self' 'nonce-$nonce';");
 
 include 'include/connect.php';
 
 if (!isset($_COOKIE['user_id'])) {
     $userId = uniqid();
-    setcookie('user_id', $userId, time() + 30 * 24 * 60 * 60, '/', '', true, true); // Добавлены флаги Secure и HttpOnly
+    setcookie('user_id', $userId, time() + 30 * 24 * 60 * 60, '/', '', true, true);
 } else {
     $userId = $_COOKIE['user_id'];
 }
@@ -39,10 +35,7 @@ $noteCount = $countResult['note_count'];
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Заметки</title>
-
-    <!-- Применение nonce для стилистического файла -->
-    <link rel="stylesheet" href="assets/css/index.css" type="text/css" nonce="<?= $nonce ?>">
-
+    <link rel="stylesheet" href="assets/css/index.css" type="text/css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
@@ -81,9 +74,7 @@ $noteCount = $countResult['note_count'];
             </div>
         </div>
     </div>
-    
     <?php include 'include/html/footer.php' ?>
-
-    <script src="assets/js/index.js" type="text/javascript" nonce="<?= $nonce ?>"></script>
+    <script src="assets/js/index.js" type="text/javascript"></script>
 </body>
 </html>

@@ -1,4 +1,6 @@
 <?php
+date_default_timezone_set('Europe/Kiev');
+
 include 'include/connect.php';
 
 if (!isset($_COOKIE['user_id'])) {
@@ -33,34 +35,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!empty($newTitle)) {
         $stmt = $pdo->prepare("UPDATE notes SET title = :title, content = :content, updated_at = :updated_at WHERE title = :old_title AND user_id = :user_id");
         
-        $update_at = date('Y-m-d H:i:s');  // Получаем текущее время
+        $update_at = date('Y-m-d H:i:s');
 
         $stmt->bindParam(':title', $newTitle);
-        $stmt->bindParam(':updated_at', $update_at);  // Привязываем updated_at
+        $stmt->bindParam(':updated_at', $update_at);
         $stmt->bindParam(':content', $newContent);
         $stmt->bindParam(':old_title', $title);
         $stmt->bindParam(':user_id', $userId);
 
         $stmt->execute();
 
-        header("Location: index.php");  // Перенаправление на главную страницу
+        header("Location: index.php");
         exit;
     } else {
-        echo "Fill in all the fields!";  // Проверка на пустые поля
+        echo "Fill in all the fields!";
     }
 }
 
 if (isset($_GET['delete']) && $_GET['delete'] == '1' && isset($_GET['title'])) {
     $title = urldecode($_GET['title']);
     
-    // Выполняем удаление заметки
     $stmt = $pdo->prepare("DELETE FROM notes WHERE title = :title AND user_id = :user_id");
     $stmt->bindParam(':title', $title);
     $stmt->bindParam(':user_id', $userId);
     $stmt->execute();
 
     if ($stmt->rowCount() > 0) {
-        header('Location: index.php'); // Перенаправление на главную страницу
+        header('Location: index.php');
         exit;
     } else {
         echo "Error deleting note.";
@@ -117,16 +118,17 @@ if (isset($_GET['delete']) && $_GET['delete'] == '1' && isset($_GET['title'])) {
 
       titleInput.addEventListener('input', checkChanges);
       contentInput.addEventListener('input', checkChanges);
-          const inputTitle = document.getElementById('title');
-    const ElementTitle = document.querySelector('.pk-header__title-content');
+
+      const inputTitle = document.getElementById('title');
+      const ElementTitle = document.querySelector('.pk-header__title-content');
     
-    inputTitle.addEventListener('input', function() {
-      if (!inputTitle.value) {
-        ElementTitle.textContent = '<?= htmlspecialchars($note['title'] ?? 'Untitled') ?>';
-      } else {
-        ElementTitle.textContent = inputTitle.value;
-      }
-    });
+      inputTitle.addEventListener('input', function() {
+        if (!inputTitle.value) {
+          ElementTitle.textContent = '<?= htmlspecialchars($note['title'] ?? 'Untitled') ?>';
+        } else {
+          ElementTitle.textContent = inputTitle.value;
+        }
+      });
     
     </script>
   </body>
