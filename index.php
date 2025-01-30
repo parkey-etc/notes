@@ -2,7 +2,7 @@
 date_default_timezone_set('Europe/Kiev');
 
 $file = 'VERSION';
-$version = file_exists($file), file_get_contents($file) : 'Не определено.';
+$version = file_exists($file) ? file_get_contents($file) : 'Не определено.';
 
 include 'include/connect.php';
 
